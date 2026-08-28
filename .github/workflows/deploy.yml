@@ -16,9 +16,7 @@ jobs:
         with:
           node-version: 22
       - run: cd project && npm install --legacy-peer-deps && npm run build
-      - run: ls -la dist/ 2>&1 || echo "No dist at root"
-      - run: ls -la project/dist/ 2>&1 || echo "No project/dist"
-      - run: rm -rf dist && cp -r project/dist/. dist/ 2>/dev/null; ls -la dist/
+      - run: ls -la dist/ 2>&1 || true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
