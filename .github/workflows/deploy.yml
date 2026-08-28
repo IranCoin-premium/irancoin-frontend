@@ -15,14 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: rm -rf patches
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: pnpm install
-      - run: pnpm build
+          cache: npm
+      - run: npm install
+      - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: project/dist
