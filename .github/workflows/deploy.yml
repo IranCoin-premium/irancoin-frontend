@@ -11,17 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: rm -rf patches
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: cd project && npm install --legacy-peer-deps && npm run build
-      - run: ls -la project/dist/public/ 2>&1 || true
-      - run: ls -la project/dist/ 2>&1 || true
-      - run: rm -rf dist && mkdir -p dist && cp -r project/dist/public/* dist/ && cp project/dist/index.js dist/ 2>/dev/null; ls -la dist/
+      - run: |
+          cp project/dist/public/index.html project/dist/public/404.html
+          touch project/dist/public/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: project/dist/public
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -29,6 +28,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
